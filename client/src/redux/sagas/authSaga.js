@@ -1,8 +1,6 @@
 import axios from "axios";
-import {} from "redux-saga/effects";
-import {} from "../types";
-
-import axios from "axios";
+import { call, put, takeEvery, all, fork } from "redux-saga/effects";
+import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST } from "../types";
 
 const loginUserAPI = (loginData) => {
   console.log(loginData, "loginData");
