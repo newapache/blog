@@ -70,6 +70,43 @@ function* watchclearError() {
   yield takeEvery(CLEAR_ERROR_REQUEST, clearError);
 }
 
+// User Loading
+
+const userLoadingAPI = (token) => {
+  console.log(token);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+  return axios.get("api/auth/user", config);
+};
+
+function* userLoading(action) {
+  console.log(action, "?D?!?!?!??!");
+  try {
+    console.log(action, "userLoading");
+    const result = yield call(userLoadingAPI, action.payload);
+    yield put({
+      type: USER_LOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_LOADING_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchuserLoading() {
+  yield takeEvery(USER_LOADING_REQUEST, userLoading);
+}
+
 //LOGOUT
 
 function* logout(action) {
@@ -90,5 +127,10 @@ function* watchlogout() {
 }
 
 export default function* authSaga() {
-  yield all([fork(watchLoginUser), fork(watchclearError), fork(watchlogout)]);
+  yield all([
+    fork(watchLoginUser),
+    fork(watchclearError),
+    fork(watchlogout),
+    fork(watchuserLoading),
+  ]);
 }
