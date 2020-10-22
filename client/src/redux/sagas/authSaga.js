@@ -87,7 +87,6 @@ const userLoadingAPI = (token) => {
 };
 
 function* userLoading(action) {
-  console.log(action, "?D?!?!?!??!");
   try {
     console.log(action, "userLoading");
     const result = yield call(userLoadingAPI, action.payload);
