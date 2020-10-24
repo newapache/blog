@@ -23,6 +23,6 @@ const store = createStore(
   initialState,
   composeEnhancer(applyMiddleware(...middlewares))
 );
-sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga); //watch~ 함수들 동작
 
 export default store;

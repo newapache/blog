@@ -56,6 +56,18 @@ const authReducer = (state = initialState, action) => {
       };
 
     case REGISTER_FAILURE:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        ...action.payload,
+        token: null,
+        user: null,
+        userId: null,
+        isAuthenticated: false,
+        isLoading: false,
+        userRole: null,
+        errorMsg: action.payload.data.errMsg,
+      };
     case LOGIN_FAILURE:
     case LOGOUT_FAILURE:
       localStorage.removeItem("token");

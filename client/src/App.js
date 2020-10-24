@@ -10,6 +10,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
+        {/* 어떤 path가 요청됐을 때 어떤 컴포넌트로 갈 지 정의된 곳  */}
         <MyRouter />
       </ConnectedRouter>
     </Provider>

@@ -125,11 +125,39 @@ function* watchlogout() {
   yield takeEvery(LOGOUT_REQUEST, logout);
 }
 
+// Register
+
+const registerUserAPI = (req) => {
+  console.log(req, "req");
+  return axios.post("api/user", req);
+};
+
+function* registerUser(action) {
+  try {
+    const result = yield call(registerUserAPI, action.payload);
+    console.log(result, "RegisterUser Data");
+    yield put({
+      type: REGISTER_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: REGISTER_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchregisterUser() {
+  yield takeEvery(REGISTER_REQUEST, registerUser);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLoginUser),
     fork(watchclearError),
     fork(watchlogout),
     fork(watchuserLoading),
+    fork(watchregisterUser),
   ]);
 }
