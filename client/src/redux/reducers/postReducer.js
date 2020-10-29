@@ -81,7 +81,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         postDetail: action.payload,
-        creatorId: action.payload._id,
+        creatorId: action.payload.creator._id, //수정 (여기서 action.payload는 saga에서 api result를 yield put)
         title: action.payload.title,
         loading: false,
       };

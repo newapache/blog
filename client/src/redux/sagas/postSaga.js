@@ -102,10 +102,11 @@ const loadPostDetailAPI = (payload) => {
 
 function* loadPostDetail(action) {
   try {
-    console.log(action);
+    console.log(action, "action"); // {type: "POST_DETAIL_LOADING_REQUEST", payload: "5f99afbfe1a4e80a4fa074eb"} dispatch param
     const result = yield call(loadPostDetailAPI, action.payload);
     console.log(result, "post_detail_saga_data");
     yield put({
+      // response save
       type: POST_DETAIL_LOADING_SUCCESS,
       payload: result.data,
     });

@@ -64,7 +64,7 @@ router.get("/:id", async (req, res, next) => {
       .populate({ path: "category", select: "categoryName" });
     post.views += 1;
     post.save();
-    console.log(post);
+    console.log(post, "post1");
     res.json(post);
   } catch (e) {
     console.error(e);

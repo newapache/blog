@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import BalloonEditor from "@ckeditor/ckeditor5-editor-balloon/src/ballooneditor";
 import { editorConfiguration } from "../../components/editor/EditorConfig";
+import { GrowingSpinner } from "../../components/Spinner";
 
 const PostDetail = (req) => {
   const dispatch = useDispatch();
@@ -25,11 +26,14 @@ const PostDetail = (req) => {
   );
   const { userId, userName } = useSelector((state) => state.auth);
 
-  console.log(req);
+  console.log(userId, "userId");
+  console.log(creatorId, "creatorId");
+  console.log(req, "req");
+
   useEffect(() => {
     dispatch({
       type: POST_DETAIL_LOADING_REQUEST,
-      payload: req.match.params.id,
+      payload: req.match.params.id, //post id
     });
     dispatch({
       type: USER_LOADING_REQUEST,
@@ -83,7 +87,14 @@ const PostDetail = (req) => {
       </Row>
     </Fragment>
   );
-  return <h1>ed</h1>;
+
+  const Body = <>{userId === creatorId ? EditButton : HomeButton}</>;
+  return (
+    <div>
+      <Helmet title={`Post | ${title}`} />
+      {loading === true ? GrowingSpinner : Body}
+    </div>
+  );
 };
 
 export default PostDetail;
