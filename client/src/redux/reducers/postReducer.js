@@ -81,7 +81,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         postDetail: action.payload,
-        creatorId: action.payload.creator._id,
+        creatorId: action.payload._id,
         title: action.payload.title,
         loading: false,
       };

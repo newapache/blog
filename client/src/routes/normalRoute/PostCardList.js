@@ -20,8 +20,8 @@ const PostCardList = () => {
     <Fragment>
       <Helmet title="Home" />
       <Row>
-        {/* {posts ? <PostCardOne posts={posts} /> : <h1>{GrowingSpinner} </h1>} */}
-        {posts ? <PostCardOne posts={posts} /> : <h1>ddddd</h1>}
+        {posts ? <PostCardOne posts={posts} /> : <h1>{GrowingSpinner} </h1>}
+        {/* {posts ? <PostCardOne posts={posts} /> : <h1>ddddd</h1>} */}
       </Row>
     </Fragment>
   );
