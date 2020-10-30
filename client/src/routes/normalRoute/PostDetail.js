@@ -29,6 +29,7 @@ const PostDetail = (req) => {
   console.log(userId, "userId");
   console.log(creatorId, "creatorId");
   console.log(req, "req");
+  console.log(postDetail, "postDetail");
 
   useEffect(() => {
     dispatch({
@@ -88,7 +89,30 @@ const PostDetail = (req) => {
     </Fragment>
   );
 
-  const Body = <>{userId === creatorId ? EditButton : HomeButton}</>;
+  const Body = (
+    <>
+      {userId === creatorId ? EditButton : HomeButton}{" "}
+      <Row className="border-bottom border-top border-primary p-3 mb-3 d-flex justify-content-between">
+        {(() => {
+          if (postDetail && postDetail.creator) {
+            return (
+              <Fragment>
+                <div className="font-weight-bold text-big">
+                  <span className="mr-3">
+                    <Button color="info">
+                      {postDetail.category.categoryName}
+                    </Button>
+                  </span>
+                  {postDetail.title}
+                </div>
+                <div className="align-self-end">{postDetail.creator.name}</div>
+              </Fragment>
+            );
+          }
+        })()}
+      </Row>
+    </>
+  );
   return (
     <div>
       <Helmet title={`Post | ${title}`} />

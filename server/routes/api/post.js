@@ -40,7 +40,6 @@ const uploadS3 = multer({
 // @route     POST api/post/image
 // @desc      Create a Post
 // @access    Private
-
 router.post("/image", uploadS3.array("upload", 5), async (req, res, next) => {
   try {
     console.log(req.files.map((v) => v.location));
@@ -64,7 +63,6 @@ router.get("/:id", async (req, res, next) => {
       .populate({ path: "category", select: "categoryName" });
     post.views += 1;
     post.save();
-    console.log(post, "post1");
     res.json(post);
   } catch (e) {
     console.error(e);
@@ -74,21 +72,18 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", auth, uploadS3.none(), async (req, res, next) => {
   try {
-    console.log(req, "req");
     const { title, contents, fileUrl, creator, category } = req.body;
     const newPost = await Post.create({
       title,
       contents,
       fileUrl,
-      creator,
+      creator: req.user.id,
       date: moment().format("YYYY-MM-DD hh:mm:ss"),
     });
 
     const findResult = await Category.findOne({
       categoryName: category,
     });
-
-    console.log(findResult, "Find Result!!!!");
 
     if (isNullOrUndefined(findResult)) {
       const newCategory = await Category.create({
@@ -118,7 +113,6 @@ router.post("/", auth, uploadS3.none(), async (req, res, next) => {
         },
       });
     }
-    console.log(newPost, "fdfdf");
     return res.redirect(`/api/post/${newPost._id}`);
   } catch (e) {
     console.log(e);

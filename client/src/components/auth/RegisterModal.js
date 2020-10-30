@@ -68,7 +68,7 @@ const RegisterModal = () => {
       <Modal isOpen={modal} toggle={handleToggle}>
         <ModalHeader toggle={handleToggle}>Register</ModalHeader>
         <ModalBody>
-          {localMsg ? <Alert color="danger">{localMsg}</Alert> : "ddddd"}
+          {localMsg ? <Alert color="danger">{localMsg}</Alert> : ""}
           <Form onSubmit={onSubmit}>
             <FormGroup>
               <Label for="name">Name</Label>
