@@ -26,6 +26,7 @@ const UserSchema = new mongoose.Schema({
     default: moment().format("YYYY-MM-DD hh:mm:ss"),
   },
   comments: [
+    //유저 모델에 comments 필드를 왜 이렇게 ? ...
     {
       post_id: {
         type: mongoose.Schema.Types.ObjectId,
