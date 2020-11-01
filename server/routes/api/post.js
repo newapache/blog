@@ -120,6 +120,27 @@ router.post("/", auth, uploadS3.none(), async (req, res, next) => {
   }
 });
 
+router.delete("/:id", auth, async (req, res) => {
+  await Post.deleteMany({ _id: req.params.id });
+  await Comment.deleteMany({ post: req.params.id });
+  await User.findByIdAndUpdate(req.user.id, {
+    $pull: {
+      posts: req.params.id,
+      comments: { post_id: req.params.id },
+    },
+  });
+  const CategoryUpdateResult = await Category.findOneAndUpdate(
+    { posts: req.params.id },
+    { $pull: { posts: req.params.id } },
+    { new: true }
+  );
+
+  if (CategoryUpdateResult.posts.length === 0) {
+    await Category.deleteMany({ _id: CategoryUpdateResult });
+  }
+  return res.json({ success: true });
+});
+
 router.get("/:id/comments", async (req, res) => {
   try {
     const comment = await Post.findById(req.params.id).populate({
