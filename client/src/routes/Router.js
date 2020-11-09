@@ -11,6 +11,7 @@ import Search from "./normalRoute/Search";
 import PostEdit from "./normalRoute/PostEdit";
 import CategoryResult from "./normalRoute/CategoryResult";
 import Profile from "./normalRoute/Profile";
+import { EditProtectedRoute } from "./protectedRoute/ProtectedRoute";
 
 const MyRouter = () => {
   return (
@@ -22,6 +23,11 @@ const MyRouter = () => {
           <Route path="/" exact component={PostCardList} />
           <Route path="/post" exact component={PostWrite} />
           <Route path="/post/:id" exact component={PostDetail} />
+          <EditProtectedRoute
+            path="/post/:id/edit"
+            exact
+            component={PostEdit}
+          />
           <Route
             path="/post/category/:categoryName"
             exact

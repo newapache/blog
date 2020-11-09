@@ -30,13 +30,14 @@ import {
 
 // All Posts load
 
-const loadPostAPI = (payload) => {
+const loadPostAPI = () => {
   return axios.get("/api/post");
 };
 
 function* loadPosts(action) {
+  // action : {type, payload} -> dispatch 인자
   try {
-    const result = yield call(loadPostAPI, action.payload);
+    const result = yield call(loadPostAPI); // res k,v는 yield에서 제공하는 값? (data라고 내가 명명 x)
     console.log(result, "loadPosts");
     yield put({
       type: POSTS_LOADING_SUCCESS,

@@ -5,10 +5,13 @@ import { Helmet } from "react-helmet";
 import { Row, Alert } from "reactstrap";
 import { GrowingSpinner } from "../../components/Spinner";
 import PostCardOne from "../../components/post/PostCardOne";
+import Category from "../../components/post/Category";
 
 // 컨테이너 (~프레젠터) 구조로 구현
 const PostCardList = () => {
-  const { posts } = useSelector((state) => state.post); // 리덕스 스토어에 접근해 기존 post 상태값 가져옴 // post key들 중 posts 불러오기
+  const { posts, categoryFindResult, loading, postCount } = useSelector(
+    (state) => state.post
+  ); // 리덕스 스토어에 접근해 기존 post 상태값 가져옴 // post key들 중 posts 불러오기
   console.log(posts);
   const dispatch = useDispatch();
 
@@ -19,6 +22,11 @@ const PostCardList = () => {
   return (
     <Fragment>
       <Helmet title="Home" />
+
+      <Row className="border-bottom border-top border-primary py-2 mb-3 ">
+        <Category posts={categoryFindResult} />
+      </Row>
+
       <Row>
         {posts ? <PostCardOne posts={posts} /> : <h1>{GrowingSpinner} </h1>}
         {/* {posts ? <PostCardOne posts={posts} /> : <h1>ddddd</h1>} */}

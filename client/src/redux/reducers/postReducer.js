@@ -46,7 +46,8 @@ export default function (state = initialState, action) {
     case POSTS_LOADING_SUCCESS:
       return {
         ...state,
-        posts: [...state.posts, ...action.payload], //기존 포스트가 앞쪽에 배치되도록
+        posts: [...state.posts, ...action.payload.postFindResult], //기존 포스트가 앞쪽에 배치되도록
+        categoryFindResult: action.payload.categoryFindResult,
         loading: false,
       };
     case POSTS_LOADING_FAILURE:
@@ -132,7 +133,7 @@ export default function (state = initialState, action) {
     case CATEGORY_FIND_REQUEST:
       return {
         ...state,
-        posts: [],
+        posts: [], // 카테고리에서 홈으로 돌아갈 때 포스트가 겹치는 것 방지하기 위해 한 번 날려줌.
         loading: true,
       };
     case CATEGORY_FIND_SUCCESS:
