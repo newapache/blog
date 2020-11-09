@@ -288,5 +288,6 @@ export default function* postSaga() {
     fork(watchDeletePost),
     fork(watchPostEditLoad),
     fork(watchPostEditUpload),
+    fork(watchCategoryFind),
   ]);
 }
