@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import LoginModal from "../components/auth/LoginModal";
 import RegisterModal from "../components/auth/RegisterModal";
 import { LOGOUT_REQUEST, POSTS_WRITE_REQUEST } from "../redux/types";
+import SearchInput from "./search/searchInput";
 
 const AppNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,14 +50,10 @@ const AppNavbar = () => {
     <Fragment>
       <NavItem className="d-flex justify-content-center">
         <Form className="col mt-2">
-          {user && user.name ? ( //값 존재하는데 undefined 발생하는 에러 방지
-            <Link
-              to="/post"
-              className="btn btn-success block text-white px-3"
-              onClick={addPostClick}
-            >
+          {user && user.name ? (
+            <Link to={`/user/${user.name}/profile`}>
               <Button outline color="light" className="px-3" block>
-                <strong>{user ? `Welcome ${user.name}` : ""}</strong>
+                <strong>{user ? `edit ${user.name}` : ""}</strong>
               </Button>
             </Link>
           ) : (
@@ -115,6 +112,7 @@ const AppNavbar = () => {
           </Link>
           <NavbarToggler onClick={handleToggle} />
           <Collapse isOpen={isOpen} navbar>
+            <SearchInput isOpen={isOpen} />
             <Nav className="ml-auto d-felx justify-content-around" navbar>
               {isAuthenticated ? authLink : guestLink}
             </Nav>

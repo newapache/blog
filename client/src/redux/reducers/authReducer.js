@@ -103,7 +103,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        successMsg: action.payload.data.success_msg,
+        successMsg: action.payload.success_msg,
         errorMsg: "",
         previousMsg: "",
       };
@@ -116,22 +116,22 @@ const authReducer = (state = initialState, action) => {
         previousMatchMsg: action.payload.match_msg,
       };
 
-    case CLEAR_ERROR_REQUEST:
-      return {
-        ...state,
-      };
-    case CLEAR_ERROR_SUCCESS:
-      return {
-        ...state,
-        errorMsg: "",
-        previousMatchMsg: "",
-      };
-    case CLEAR_ERROR_FAILURE:
-      return {
-        ...state,
-        errorMsg: "Clear Error Fail",
-        previousMatchMsg: "Clear Error Fail",
-      };
+    // case CLEAR_ERROR_REQUEST:
+    //   return {
+    //     ...state,
+    //   };
+    // case CLEAR_ERROR_SUCCESS:
+    //   return {
+    //     ...state,
+    //     errorMsg: "",
+    //     previousMatchMsg: "", // 이전값과 같은지 여부
+    //   };
+    // case CLEAR_ERROR_FAILURE:
+    //   return {
+    //     ...state,
+    //     errorMsg: "Clear Error Fail",
+    //     previousMatchMsg: "Clear Error Fail",
+    //   };
     case USER_LOADING_REQUEST:
       return {
         ...state,

@@ -152,6 +152,41 @@ function* watchregisterUser() {
   yield takeEvery(REGISTER_REQUEST, registerUser);
 }
 
+const EditPasswordAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const token = payload.token;
+
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+  return axios.post(`/api/user/${payload.userName}/profile`, payload, config);
+};
+
+function* EditPassword(action) {
+  try {
+    console.log(action, "EditPassword");
+    const result = yield call(EditPasswordAPI, action.payload);
+    console.log(result, "EditPassword result");
+    yield put({
+      type: PASSWORD_EDIT_UPLOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: PASSWORD_EDIT_UPLOADING_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchEditPassword() {
+  yield takeEvery(PASSWORD_EDIT_UPLOADING_REQUEST, EditPassword);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLoginUser),
@@ -159,5 +194,6 @@ export default function* authSaga() {
     fork(watchlogout),
     fork(watchuserLoading),
     fork(watchregisterUser),
+    fork(watchEditPassword),
   ]);
 }
