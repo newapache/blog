@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useRef, useCallback } from "react";
+import React, { Fragment, useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { POSTS_LOADING_REQUEST } from "../../redux/types";
 import { Helmet } from "react-helmet";
@@ -7,54 +7,69 @@ import { GrowingSpinner } from "../../components/Spinner";
 import PostCardOne from "../../components/post/PostCardOne";
 import Category from "../../components/post/Category";
 
-// 컨테이너 (~프레젠터) 구조로 구현
 const PostCardList = () => {
   const { posts, categoryFindResult, loading, postCount } = useSelector(
-    (state) => state.post
-  ); // 리덕스 스토어에 접근해 기존 post 상태값 가져옴 // post key들 중 posts 불러오기
-  console.log(posts);
+    (state) => state.post //리덕스 스토어에 접근해 기존 post정보 불러옴
+  ); // post key들 중 posts값
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: POSTS_LOADING_REQUEST, payload: 0 });
   }, [dispatch]);
 
-  ////////////////////////////
+  ////////////////////////////////////////
   const skipNumberRef = useRef(0);
   const postCountRef = useRef(0);
   const endMsg = useRef(false);
 
   postCountRef.current = postCount - 6;
 
-  const observer = useRef();
+  const useOnScreen = (options) => {
+    const lastPostElementRef = useRef();
 
-  const lastPostElementRef = useCallback((node) => {
-    if (loading) return;
+    const [visible, setVisible] = useState(false);
 
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        let remainPostCount = postCountRef.current - skipNumberRef.current;
-        if (remainPostCount >= 0) {
-          dispatch({
-            type: POSTS_LOADING_REQUEST,
-            payload: skipNumberRef.current + 6,
-          });
-          skipNumberRef.current += 6;
-        } else {
-          endMsg.current = true;
+    useEffect(() => {
+      const observer = new IntersectionObserver(([entry]) => {
+        setVisible(entry.isIntersecting);
+
+        if (entry.isIntersecting) {
+          let remainPostCount = postCountRef.current - skipNumberRef.current;
+          if (remainPostCount >= 0) {
+            dispatch({
+              type: POSTS_LOADING_REQUEST,
+              payload: skipNumberRef.current + 6,
+            });
+            skipNumberRef.current += 6;
+          } else {
+            endMsg.current = true;
+            console.log(endMsg.current);
+          }
         }
+      }, options);
+
+      if (lastPostElementRef.current) {
+        observer.observe(lastPostElementRef.current);
       }
-    });
 
-    if (observer.current) observer.current.disconnect();
+      const LastElementReturnFunc = () => {
+        if (lastPostElementRef.current) {
+          observer.unobserve(lastPostElementRef.current);
+        }
+      };
 
-    if (node) {
-      console.log(node);
-      observer.current.observe(node);
-    }
+      return LastElementReturnFunc;
+    }, [lastPostElementRef, options]);
+
+    return [lastPostElementRef, visible];
+  };
+
+  ////////////////////////////////////////
+  const [lastPostElementRef, visible] = useOnScreen({
+    threshold: "0.5",
   });
-
-  ////////////////////////////
+  console.log(visible, "visible", skipNumberRef.current, "skipNum");
 
   return (
     <Fragment>

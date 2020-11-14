@@ -9,9 +9,11 @@ import postRoutes from "./routes/api/post";
 import userRoutes from "./routes/api/user";
 import authRoutes from "./routes/api/auth";
 import searchRoutes from "./routes/api/search";
+import path from "path"; //절대경로
 
 const app = express();
 const { MONGO_URI } = config;
+const prod = process.env.NODE_ENV === "production";
 
 app.use(hpp());
 app.use(helmet());
@@ -35,5 +37,12 @@ app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/search", searchRoutes);
+
+if (prod) {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+  });
+}
 
 export default app;
