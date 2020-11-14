@@ -30,14 +30,14 @@ import {
 
 // All Posts load
 
-const loadPostAPI = () => {
-  return axios.get("/api/post");
+const loadPostAPI = (payload) => {
+  return axios.get(`/api/post/skip/${payload}`);
 };
 
 function* loadPosts(action) {
   // action : {type, payload} -> dispatch 인자
   try {
-    const result = yield call(loadPostAPI); // res k,v는 yield에서 제공하는 값? (data라고 내가 명명 x)
+    const result = yield call(loadPostAPI, action.payload); // res k,v는 yield에서 제공하는 값? (data라고 내가 명명 x)
     console.log(result, "loadPosts");
     yield put({
       type: POSTS_LOADING_SUCCESS,
@@ -49,7 +49,7 @@ function* loadPosts(action) {
       type: POSTS_LOADING_FAILURE,
       payload: e,
     });
-    yield push("/");
+    //yield push("/"); // infinite scroll로 변경
   }
 }
 

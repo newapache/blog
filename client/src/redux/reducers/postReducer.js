@@ -48,6 +48,7 @@ export default function (state = initialState, action) {
         ...state,
         posts: [...state.posts, ...action.payload.postFindResult], //기존 포스트가 앞쪽에 배치되도록
         categoryFindResult: action.payload.categoryFindResult,
+        postCount: action.payload.postCount,
         loading: false,
       };
     case POSTS_LOADING_FAILURE:
